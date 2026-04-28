@@ -3245,7 +3245,7 @@ window.Quarto = {
 
 <section id="model-setup" class="level2">
 <h2 class="anchored" data-anchor-id="model-setup">Model Setup</h2>
-<p>Let’s imagine we have the following model for a treatment we want to estimate for a prettest posttest design</p>
+<p>Let’s imagine we have the following model for a treatment we want to estimate for a prettest posttest design:</p>
 <p><span class="math display">\[y_2 = \beta_0 + \beta_1 treatment + \beta_2 y_1\]</span></p>
 <p>If we have measurement reactivity, the problem is that the act of taking the measurement at time 1 (<span class="math inline">\(y_1\)</span>) acts as confounder, meaning we can’t know if <span class="math inline">\(\beta_1\)</span> might look different if <span class="math inline">\(y_1\)</span> were not measured.</p>
 <p>A standard solution might be to omit the prettest and just do a between subjects comparison without any prettest as a covariate</p>
