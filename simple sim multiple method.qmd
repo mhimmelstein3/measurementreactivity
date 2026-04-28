@@ -1,6 +1,8 @@
 ---
 title: "Basic Measurement Reactivity Sim"
-format: html
+format:
+  html:
+    embed-resources: true
 editor: visual
 editor_options: 
   chunk_output_type: console
@@ -518,7 +520,7 @@ saveRDS(point_df, "simple sim results.RDS")
 
 Here is each parameter as recovered by each model (where possible)
 
-```{r}
+```{r message = FALSE, warning = FALSE}
 
 
 point_df_long <- point_df %>% pivot_longer(1:ncol(.), names_to = "variable",
@@ -539,8 +541,8 @@ point_df_long$definition <- factor(point_df_long$definition, levels = unique(poi
 ggplot(point_df_long, aes(x = model, y = estimate, fill = model, color = model)) +
   geom_hline(aes(yintercept = true_value)) +
   facet_wrap(. ~ definition, nrow = 3, scales = "free") +
-  theme_minimal() +
-  geom_violin(alpha = .5) + geom_jitter() + theme(legend.position = "none",
+  theme_minimal() + geom_violin(alpha = .6) + geom_jitter(alpha = .25) + 
+   theme(legend.position = "none",
   axis.text.x = element_text(angle = 45, hjust = 1)
 )
 
