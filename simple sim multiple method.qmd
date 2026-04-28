@@ -14,7 +14,7 @@ $$y_2 = \beta_0 + \beta_1 treatment + \beta_2 y_1$$
 
 If we have measurement reactivity, the problem is that the act of taking the measurement at time 1 ($y_1$) acts as confounder, meaning we can't know if $\beta_1$ might look different if $y_1$ were not measured.
 
-A standard solution might be to omite the prettest and just do a between subjects comparison without any prettest as a covariate
+A standard solution might be to omit the prettest and just do a between subjects comparison without any prettest as a covariate
 
 $$y_2 = \beta_0 + \beta_1 treatment$$
 
@@ -36,17 +36,15 @@ I sketched out a simple simulation with the following data generating model
 -   $\beta_1$ is the effect of the treatment (compared to control) when there is no pretest at the average baseline score ($y_1$)
 -   $\beta_2$ is the effect of the prettest being elicited on the posttest in the control condition (no target treatment) at the average baseline score ($y_1$)
 -   $\beta_3$ is the effect of the prettest score on posttest (set to 1 for simplicity) in the control condition when there is no prettest
--  $\beta_4$ is the difference in treatment effect (change in $\beta_1$) when the prettest is taken (vs when it is not) at the average baseline score ($y_1$)
--   $\beta_5$ is the change in the effect of the treatment ($\beta_1$) for one unit increase in baseline score ($y_1$) when the prettest is not taken. 
+-   $\beta_4$ is the difference in treatment effect (change in $\beta_1$) when the prettest is taken (vs when it is not) at the average baseline score ($y_1$)
+-   $\beta_5$ is the change in the effect of the treatment ($\beta_1$) for one unit increase in baseline score ($y_1$) when the prettest is not taken.
 -   $\beta_6$ is the change in the effect of the prettest ($\beta_2$) for one unit increase in baseline score ($y_1$) when the in the control condition
 -   $\beta_7$ is the change in the change the effect of treatment for one unit increase in baseline score ($\beta_5$) when the prettest is taken
 -   $R^2_{aux}$ is the proportion of variance in $y_1$ explained by auxiliary variables
 
-
 The data generating process is based on
 
-$$\boldsymbol{aux} \sim MVN(\boldsymbol{0}, \boldsymbol{I})$$
-**NOTE:** for now this implies predictors are independent. We should manipulate this!
+$$\boldsymbol{aux} \sim MVN(\boldsymbol{0}, \boldsymbol{I})$$ **NOTE:** for now this implies predictors are independent. We should manipulate this!
 
 $$y_{1,i} = \sum aux_i + \epsilon_{impute,i}$$
 
@@ -70,7 +68,7 @@ In the first version of the simple simulation I set
 -   $n_pre = .4 (N)$ (maybe manipulated?)
 -   $K = 3$ (maybe manipulated?)
 
-```{r cache = TRUE, message = FALSE, warning = FALSE}
+```{r message = FALSE, warning = FALSE}
 library(MASS)
 library(effectsize)
 library(mice)
@@ -517,7 +515,6 @@ t2 - t1
 saveRDS(point_df, "simple sim results.RDS")
 }
 ```
-
 
 Here is each parameter as recovered by each model (where possible)
 
