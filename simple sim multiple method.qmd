@@ -52,7 +52,7 @@ $$y_{1,i} = \sum aux_i + \epsilon_{impute,i}$$
 
 where $\sigma_{\epsilon_{impute,i}} = K\frac{1-R^2_{aux}}{R^2_{aux}}$
 
-$y_{2,i} = \beta_0 + \beta_1 treatment_i +  \beta_2(prettest_i)  + \beta_3 (y_{1,i}) +  \beta_4(treatment_i)(prettest_i) + beta_5 (treatment_i) (y_{1,i}) + beta_6 (prettest_i) (y_{1,i}) + beta_7 (treatment_i) (prettest_i) (y_{1,i}) +\epsilon_{y2}$
+$y_{2,i} = \beta_0 + \beta_1 treatment_i +  \beta_2(prettest_i)  + \beta_3 (y_{1,i}) +  \beta_4(treatment_i)(prettest_i) + \beta_5 (treatment_i) (y_{1,i}) + \beta_6 (prettest_i) (y_{1,i}) + \beta_7 (treatment_i) (prettest_i) (y_{1,i}) +\epsilon_{y2}$
 
 In the first version of the simple simulation I set
 

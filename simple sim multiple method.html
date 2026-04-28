@@ -3275,7 +3275,7 @@ window.Quarto = {
 <p><span class="math display">\[\boldsymbol{aux} \sim MVN(\boldsymbol{0}, \boldsymbol{I})\]</span> <strong>NOTE:</strong> for now this implies predictors are independent. We should manipulate this!</p>
 <p><span class="math display">\[y_{1,i} = \sum aux_i + \epsilon_{impute,i}\]</span></p>
 <p>where <span class="math inline">\(\sigma_{\epsilon_{impute,i}} = K\frac{1-R^2_{aux}}{R^2_{aux}}\)</span></p>
-<p><span class="math inline">\(y_{2,i} = \beta_0 + \beta_1 treatment_i +  \beta_2(prettest_i)  + \beta_3 (y_{1,i}) +  \beta_4(treatment_i)(prettest_i) + beta_5 (treatment_i) (y_{1,i}) + beta_6 (prettest_i) (y_{1,i}) + beta_7 (treatment_i) (prettest_i) (y_{1,i}) +\epsilon_{y2}\)</span></p>
+<p><span class="math inline">\(y_{2,i} = \beta_0 + \beta_1 treatment_i +  \beta_2(prettest_i)  + \beta_3 (y_{1,i}) +  \beta_4(treatment_i)(prettest_i) + \beta_5 (treatment_i) (y_{1,i}) + \beta_6 (prettest_i) (y_{1,i}) + \beta_7 (treatment_i) (prettest_i) (y_{1,i}) +\epsilon_{y2}\)</span></p>
 <p>In the first version of the simple simulation I set</p>
 <ul>
 <li><span class="math inline">\(\beta_0 = 0\)</span> mean of <span class="math inline">\(y_2\)</span> in control + no prettest condition (set to 0 for simplicity)</li>
