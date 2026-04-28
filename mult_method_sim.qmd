@@ -1,9 +1,7 @@
 ---
 title: "Basic Measurement Reactivity Sim"
 format:
-  html:
-    embed-resources: true
-    html-math-method: mathjax
+  html
 editor: visual
 editor_options: 
   chunk_output_type: console
