@@ -3,6 +3,7 @@ title: "Basic Measurement Reactivity Sim"
 format:
   html:
     embed-resources: true
+    html-math-method: mathjax
 editor: visual
 editor_options: 
   chunk_output_type: console
@@ -10,7 +11,7 @@ editor_options:
 
 ## Model Setup
 
-Let's imagine we have the following model for a treatment we want to estimate for a prettest posttest design
+Let's imagine we have the following model for a treatment we want to estimate for a prettest posttest design:
 
 $$y_2 = \beta_0 + \beta_1 treatment + \beta_2 y_1$$
 
