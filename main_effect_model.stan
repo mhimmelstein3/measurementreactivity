@@ -27,6 +27,10 @@ data {
   matrix[N_y2, K_y2] X_y2;  // population-level design matrix
   int<lower=1> Kc_y2;  // number of population-level effects after centering
   int<lower=1> Ksp_y2;  // number of special effects terms
+  // covariates of special effects terms
+  vector[N_y2] Csp_y2_1;
+  vector[N_y2] Csp_y2_2;
+  vector[N_y2] Csp_y2_3;
   int<lower=1> N_y1;  // number of observations
   vector[N_y1] Y_y1;  // response variable
   int<lower=0> Nmi_y1;  // number of missings
@@ -85,13 +89,13 @@ transformed parameters {
   lprior += student_t_lpdf(Intercept_x1 | 3, 0, 2.5);
   lprior += student_t_lpdf(sigma_x1 | 3, 0, 2.5)
     - 1 * student_t_lccdf(0 | 3, 0, 2.5);
-  lprior += student_t_lpdf(Intercept_x2 | 3, 0, 2.5);
+  lprior += student_t_lpdf(Intercept_x2 | 3, 0.1, 2.5);
   lprior += student_t_lpdf(sigma_x2 | 3, 0, 2.5)
     - 1 * student_t_lccdf(0 | 3, 0, 2.5);
-  lprior += student_t_lpdf(Intercept_x3 | 3, 0.1, 2.5);
+  lprior += student_t_lpdf(Intercept_x3 | 3, -0.1, 2.5);
   lprior += student_t_lpdf(sigma_x3 | 3, 0, 2.5)
     - 1 * student_t_lccdf(0 | 3, 0, 2.5);
-  lprior += student_t_lpdf(Intercept_y2 | 3, 0.2, 2.5);
+  lprior += student_t_lpdf(Intercept_y2 | 3, 0.3, 2.5);
   lprior += student_t_lpdf(sigma_y2 | 3, 0, 2.5)
     - 1 * student_t_lccdf(0 | 3, 0, 2.5);
   lprior += student_t_lpdf(Intercept_y1 | 3, 0, 2.5);
@@ -133,7 +137,7 @@ model {
     }
     for (n in 1:N_y2) {
       // add more terms to the linear predictor
-      mu_y2[n] += (bsp_y2[1]) * Yl_y1[n];
+      mu_y2[n] += (bsp_y2[1]) * Yl_y1[n] + (bsp_y2[2]) * Yl_y1[n] * Csp_y2_1[n] + (bsp_y2[3]) * Yl_y1[n] * Csp_y2_2[n] + (bsp_y2[4]) * Yl_y1[n] * Csp_y2_3[n];
     }
     target += normal_id_glm_lpdf(Y_x1 | Xc_x1, mu_x1, b_x1, sigma_x1);
     target += normal_id_glm_lpdf(Y_x2 | Xc_x2, mu_x2, b_x2, sigma_x2);

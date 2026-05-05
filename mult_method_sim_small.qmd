@@ -1,5 +1,5 @@
 ---
-title: "Basic Measurement Reactivity Sim"
+title: "Basic Measurement Reactivity Sim Small Effects"
 format:
   html
 editor: visual
@@ -53,21 +53,22 @@ where $\sigma_{\epsilon_{impute,i}} = K\frac{1-R^2_{aux}}{R^2_{aux}}$
 
 $y_{2,i} = \beta_0 + \beta_1 treatment_i +  \beta_2(prettest_i)  + \beta_3 (y_{1,i}) +  \beta_4(treatment_i)(prettest_i) + \beta_5 (treatment_i) (y_{1,i}) + \beta_6 (prettest_i) (y_{1,i}) + \beta_7 (treatment_i) (prettest_i) (y_{1,i}) +\epsilon_{y2}$
 
-In the first version of the simple simulation I set
+In the second version of the simple simulation I set
 
 -   $\beta_0 = 0$ mean of $y_2$ in control + no prettest condition (set to 0 for simplicity)
--   $\beta_1 = .3$ (should be manipulated)
--   $\beta_2 = .2$ (should be manipulated)
+-   $\beta_1 = .2$ (should be manipulated)
+-   $\beta_2 = .1$ (should be manipulated)
 -   $\beta_3 = 1$ (does not need to be manipulated)
--   $\beta_4 = - .75 (\beta_1)$, meaning that 75% of the effect of measurement "overlapped" with the treatment effect (should be manipulated and we should think about if this is the right way to do)
+-   $\beta_4 = - .25 (\beta_1)$, meaning that 75% of the effect of measurement "overlapped" with the treatment effect (should be manipulated and we should think about if this is the right way to do)
 -   $\beta_5 = - .1$ (should be manipulated)
 -   $\beta_6 = 0$ (should be manipulated)
 -   $\beta_7 = 0$ (should be manipulated)
 -   $\sigma_{\epsilon_{y2}} = 1$ (for simplicity, does not need to be manipulated I don't think)
--   $R^2_{aux} = .33$ (should be manipulated)
+-   $R^2_{aux} = .04$ (should be manipulated)
 -   $N = 400$ (should be manipulated)
 -   $n_pre = .4 (N)$ (maybe manipulated?)
 -   $K = 3$ (maybe manipulated?)
+
 
 Additionally, we aren't necessarily interested in recovering the raw parameters, but the *standardized* effects. Because  $\sigma_{\epsilon_{y2}} = 1$, if the full model is correctly estimated, the coefficients should reflect the standardized effects, but if  $\sigma_{\epsilon_{y2}}$ is biased because the model is otherwise misspecified, the standardized treatment effect of interest would be more appropriately estimated as $d = \frac{\hat{\beta}_1}{\hat{ \sigma}_{\epsilon_{y2}}}$
 
@@ -79,9 +80,9 @@ library(mitml)
 library(brms)
 library(rstan)
 library(mdmb)
-library(emmeans)
 library(lme4)
 library(lmerTest)
+library(emmeans)
 library(tidyverse)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
@@ -90,19 +91,19 @@ rstan_options(auto_write = TRUE)
 
 ## Set parameters
 n <- 400 ## Sample Size
-r2_aux <- .33 ## R2 of missing variable on Type B aux variables
+r2_aux <- .04 ## R2 of missing variable on Type B aux variables
 K <- 3 ## number of aux variables
 cor_mat <- diag(1, K, K) ## Correlations for aux variables (independent for now)  
 
-p_pre <- .4 ## proportion in measured condition
+p_pre <- .5 ## proportion in measured condition
 n_pre <- round(n * p_pre) ## N in measured condition
 n_no_pre <- n - n_pre ## N in unmeasured condition
 prettest <- c(rep(1, n_pre), rep(0, n_no_pre)) ## dummy variable for measurement
 treatment <- rep(c(0,1), n/2)
-beta1 <- .3 ## treatment of interest
-beta2 <- .2 ## treatment effect of measurement
+beta1 <- .2 ## treatment of interest
+beta2 <- .1 ## treatment effect of measurement
 beta3 <- 1
-beta4 <-  -.75 * beta1
+beta4 <-  -.25 * beta1
 beta5 <- -.1
 beta6 <- 0
 beta7 <- 0
@@ -120,6 +121,7 @@ par_df <- data.frame(parameter = c(paste0("beta", 0:7), "sigma","d","diff","diff
                                     beta6, beta7, sigma, beta1,0,0))
 
 
+
 n_imps <- 100 ## set number of imputations for mice
 
 iter <- 100
@@ -127,8 +129,8 @@ iter <- 100
 ## What else should we add here?
 ## Freq. test stats information? p, t, se, CI
 ## Bayesian credible intervals? What other bayes stuff?
-if (file.exists("simple sim results.RDS")) {
-  point_df <- readRDS("simple sim results.RDS")
+if (file.exists("simple sim results small.RDS")) {
+  point_df <- readRDS("simple sim results small.RDS")
 } else {
 
 
@@ -518,16 +520,17 @@ t2 <- Sys.time() # save finish time
 
 t2 - t1
 
-saveRDS(point_df, "simple sim results.RDS")
+saveRDS(point_df, "simple sim results small.RDS")
 }
 ```
+
 
 Here is each parameter as recovered by each model (where possible)
 
 ```{r message = FALSE, warning = FALSE}
 
 
-point_df <- readRDS("simple sim results.RDS")
+
 
 point_df_long <- point_df %>% 
   mutate(true_d = true_beta1,
